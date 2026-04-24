@@ -1,0 +1,232 @@
+
+A10 A9 A8 A7 A6 A5 | A4 A3 A2 A1 A0 || D7 D6 D5 | D4 D3 D2 D1 | D0
+----------------------------------------------------------------
+ 0  0  0  0  0  0  | 0  0  0  0  0 || 0  0  0 | 0  0  0  0 | 0
+ 0  0  0  0  0  0  | 0  0  0  0  1 || 0  0  0 | 0  0  0  1 | 1
+ 0  0  0  0  0  0  | 0  0  0  1  0 || 0  0  0 | 0  0  1  0 | 0
+ 0  0  0  0  0  0  | 0  0  0  1  1 || 0  0  0 | 0  0  1  1 | 1
+ 0  0  0  0  0  0  | 0  0  1  0  0 || 0  0  0 | 0  1  0  0 | 0
+ 0  0  0  0  0  0  | 0  0  1  0  1 || 0  0  0 | 0  1  0  1 | 1
+ 0  0  0  0  0  0  | 0  0  1  1  0 || 0  0  0 | 0  1  1  0 | 0
+ 0  0  0  0  0  0  | 0  0  1  1  1 || 0  0  0 | 0  1  1  1 | 1
+ 0  0  0  0  0  0  | 0  1  0  0  0 || 0  0  0 | 1  0  0  0 | 0
+ 0  0  0  0  0  0  | 0  1  0  0  1 || 0  0  0 | 1  0  0  1 | 1
+ 0  0  0  0  0  0  | 0  1  0  1  0 || 0  0  0 | 1  0  1  0 | 0
+ 0  0  0  0  0  0  | 0  1  0  1  1 || 0  0  0 | 1  0  1  1 | 1
+ 0  0  0  0  0  0  | 0  1  1  0  0 || 0  0  0 | 1  1  0  0 | 0
+ 0  0  0  0  0  0  | 0  1  1  0  1 || 0  0  0 | 1  1  0  1 | 1
+ 0  0  0  0  0  0  | 0  1  1  1  0 || 0  0  0 | 1  1  1  0 | 0
+ 0  0  0  0  0  0  | 0  1  1  1  1 || 0  0  0 | 1  1  1  1 | 1
+----------------------------------------------------------------
+ 0  0  0  0  0  0  | 1  0  0  0  0 || 0  0  1 | 0  0  0  0 | 0
+ 0  0  0  0  0  0  | 1  0  0  0  1 || 0  0  1 | 0  1  0  0 | 1
+ 0  0  0  0  0  0  | 1  0  0  1  0 || 0  0  1 | 1  0  0  0 | 0
+ 0  0  0  0  0  0  | 1  0  0  1  1 || 0  0  1 | 1  1  0  0 | 1
+----------------------------------------------------------------
+ 0  0  0  0  0  0  | 1  0  1  0  0 || 0  1  0 | 0  0  0  0 | 0
+ 0  0  0  0  0  0  | 1  0  1  0  1 || 0  1  0 | 0  1  0  0 | 1
+ 0  0  0  0  0  0  | 1  0  1  1  0 || 0  1  0 | 1  0  0  0 | 0
+ 0  0  0  0  0  0  | 1  0  1  1  1 || 0  1  0 | 1  1  0  0 | 1
+----------------------------------------------------------------
+ 0  0  0  0  0  0  | 1  1  0  0  0 || 0  1  1 | 0  0  0  0 | 0
+ 0  0  0  0  0  0  | 1  1  0  0  1 || 0  1  1 | 0  0  1  0 | 1
+ 0  0  0  0  0  0  | 1  1  0  1  0 || 0  1  1 | 0  1  0  0 | 0
+ 0  0  0  0  0  0  | 1  1  0  1  1 || 0  1  1 | 0  1  1  0 | 1
+
+:2000000000030407080B0C0F10131417181B1C1F20293039404950596065686D000000006A
+:00000001FF
+==================================================================================================
+==================================================================================================
+==================================================================================================
+A10 A9 A8 A7 A6 A5 | A4 A3 A2 A1 A0 || D7 D6 D5 | D4 D3 D2 D1 | D0
+----------------------------------------------------------------
+ 0  0  0  0  0  0  | 0  0  0  0  0 || 0  0  0 | 0  0  0  0 | 0
+ 0  0  0  0  0  0  | 0  0  0  0  1 || 0  0  0 | 0  0  0  1 | 1
+ 0  0  0  0  0  0  | 0  0  0  1  0 || 0  0  0 | 0  0  1  0 | 0
+ 0  0  0  0  0  0  | 0  0  0  1  1 || 0  0  0 | 0  0  1  1 | 1
+ 0  0  0  0  0  0  | 0  0  1  0  0 || 0  0  0 | 0  1  0  0 | 0
+ 0  0  0  0  0  0  | 0  0  1  0  1 || 0  0  0 | 0  1  0  1 | 1
+ 0  0  0  0  0  0  | 0  0  1  1  0 || 0  0  0 | 0  1  1  0 | 0
+ 0  0  0  0  0  0  | 0  0  1  1  1 || 0  0  0 | 0  1  1  1 | 1
+ 0  0  0  0  0  0  | 0  1  0  0  0 || 0  0  0 | 1  0  0  0 | 0
+ 0  0  0  0  0  0  | 0  1  0  0  1 || 0  0  0 | 1  0  0  1 | 1
+ 0  0  0  0  0  0  | 0  1  0  1  0 || 0  0  0 | 1  0  1  0 | 0
+ 0  0  0  0  0  0  | 0  1  0  1  1 || 0  0  0 | 1  0  1  1 | 1
+ 0  0  0  0  0  0  | 0  1  1  0  0 || 0  0  0 | 1  1  0  0 | 0
+ 0  0  0  0  0  0  | 0  1  1  0  1 || 0  0  0 | 1  1  0  1 | 1
+ 0  0  0  0  0  0  | 0  1  1  1  0 || 0  0  0 | 1  1  1  0 | 0
+ 0  0  0  0  0  0  | 0  1  1  1  1 || 0  0  0 | 1  1  1  1 | 1
+----------------------------------------------------------------
+ 0  0  0  0  0  0  | 1  0  0  0  0 || 0  0  1 | 0  0  1  0 | 0
+ 0  0  0  0  0  0  | 1  0  0  0  1 || 0  0  1 | 0  1  1  0 | 1
+ 0  0  0  0  0  0  | 1  0  0  1  0 || 0  0  1 | 1  0  0  0 | 0
+ 0  0  0  0  0  0  | 1  0  0  1  1 || 0  0  1 | 1  1  0  0 | 1
+----------------------------------------------------------------
+ 0  0  0  0  0  0  | 1  0  1  0  0 || 0  1  0 | 0  0  0  0 | 0
+ 0  0  0  0  0  0  | 1  0  1  0  1 || 0  1  0 | 0  1  0  0 | 1
+ 0  0  0  0  0  0  | 1  0  1  1  0 || 0  1  0 | 1  0  1  0 | 0
+ 0  0  0  0  0  0  | 1  0  1  1  1 || 0  1  0 | 1  1  1  0 | 1
+----------------------------------------------------------------
+ 0  0  0  0  0  0  | 1  1  0  0  0 || 0  1  1 | 0  0  0  0 | 0
+ 0  0  0  0  0  0  | 1  1  0  0  1 || 0  1  1 | 0  0  1  0 | 1
+ 0  0  0  0  0  0  | 1  1  0  1  0 || 0  1  1 | 0  1  0  0 | 0
+ 0  0  0  0  0  0  | 1  1  0  1  1 || 0  1  1 | 0  1  1  0 | 1
+
+:2000000000030407080B0C0F10131417181B1C1F242D30394049545D6065686D000000005A
+:00000001FF
+
+* **ALU = ¬Y0’**  (opcode = 000)
+* **LW  = ¬Y1’**  (opcode = 001)
+* **SW  = ¬Y2’**  (opcode = 010)
+* **BEQ = ¬Y3’**  (opcode = 011)
+
+| Opcode | Type | RA (Read A) | RB (Read B) | WA (Write Addr)         |
+| ------ | ---- | ----------- | ----------- | ----------------------- |
+| 000    | ALU  | 00 fixed    | 01 fixed    | 00 fixed                |
+| 001    | LW   | RS=IR4..IR3 | 01 fixed    | **RT=IR2..IR1**         |
+| 010    | SW   | RS=IR4..IR3 | 01 fixed    | don’t care (RegWrite=0) |
+| 011    | BEQ  | RS=IR4..IR3 | RT=IR2..IR1 | don’t care (RegWrite=0) |
+
+| Opcode (`D7-D5`) | Instruction | RegWrite | MemRead | MemWrite | ALUSrc | MemtoReg | Branch | **ALUop (2 bits)** |
+| :--------------: | :---------- | :------: | :-----: | :------: | :----: | :------: | :----: | :----------------: |
+|       `000`      | ALU/R-type  |   **1**  |    0    |     0    |  **0** |     0    |    0   |      **`10`**      |
+|       `001`      | `lw`        |   **1**  |  **1**  |     0    |  **1** |   **1**  |    0   |      **`00`**      |
+|       `010`      | `sw`        |     0    |    0    |   **1**  |  **1** |     X    |    0   |      **`00`**      |
+|       `011`      | `beq`       |     0    |    0    |     0    |  **0** |     X    |  **1** |      **`01`**      |
+
+┌───────────┼─────────┼────────┼──────┼───────┼──────┼────────┼─────┼─────┐
+│ Opcode (D7–D5)│ Instruction │ RegWrite │ MemRead │ MemWrite │ ALUSrc │ MemtoReg │ Branch │ ALUOp  │
+├───────────┼─────────┼────────┼──────┼───────┼──────┼────────┼─────┼──────┤
+│ 000           │ R-type      │    1     │    0    │    0     │   0    │    0     │   0    │  10    │
+│ 001           │ lw          │    1     │    1    │    0     │   1    │    1     │   0    │  00    │
+│ 010           │ sw          │    0     │    0    │    1     │   1    │    X     │   0    │  00    │
+│ 011           │ beq         │    0     │    0    │    0     │   0    │    X     │   1    │  01    │
+└───────────┼─────────┼────────┼──────┼───────┼──────┼────────┼─────┼──────┘
+
+
+Main control signals
+
+RegWrite = ALU + LW = NOT(Y0') + NOT(Y1')
+MemRead = LW = NOT(Y1')
+MemWrite = SW = NOT(Y2')
+ALUSrc = LW + SW = NOT(Y1') + NOT(Y2')
+MemtoReg = LW = NOT(Y1')
+Branch = BEQ = NOT(Y3')
+
+(Optional) ALUOp bits (if you still want to display them)
+ALUOp1 = ALU = NOT(Y0')
+ALUOp0 = BEQ = NOT(Y3')
+
+
+# ✅ Common for all instructions
+
+D7–D5 = Opcode (goes to your 74LS138)
+
+
+# 1) Opcode = `000`  → ALU / R-type
+
+Purpose: do one of your ALU operations (16 ops)
+
+* **ALU selector (funct) = D4–D1**  ✅ this goes to S3..S0 (when ALU=1)
+* **D0 = don’t care** (you can keep 0 or 1)
+
+ALU_Control_3 (Most Significant Bit):
+    *   It is '1' only when `ALUOp=10` AND `Func3=1`.
+    *   Equation: `ALU_Control_3 = (ALUOp1 AND NOT(ALUOp0) AND Func3)`
+
+ALU_Control_2 :
+    *   Equation: `ALU_Control_2 = (ALUOp1 AND NOT(ALUOp0) AND Func2)`
+
+ALU_Control_1 :
+    *   Equation: `ALU_Control_1 = (ALUOp1 AND NOT(ALUOp0) AND Func1)`
+
+ALU_Control_0 (Least Significant Bit):
+    *   It is '1' in two cases:
+        1.  When `ALUOp=01` (for SUBTRACT).
+        2.  When `ALUOp=10` AND `Func0=1` (for R-Type).
+    *   Equation: `ALU_Control_0 = (NOT(ALUOp1) AND ALUOp0) OR (ALUOp1 AND NOT(ALUOp0) AND Func0)`
+
+
+✅ In this format:
+
+* **There is NO rs/rt/rd encoded.**
+* Inputs come from **fixed or mux-selected registers** (your RA/RB forced logic).
+
+So for opcode `000`:
+
+* **ALU selector = D4 D3 D2 D1**
+* **rs/rt/rd = not present**
+* **offset = not present**
+
+
+
+----------------------------------------------------------------------------------------------------------------
+# 2) Opcode = `001`  → **LW (load word)**
+
+**Purpose:** address = Reg[rs] + offset, then load memory data
+
+* **rs (base register) = D4–D3**
+* **offset (signed 3-bit) = D2–D0**  ✅ this goes into sign extender
+* **rt is not encoded separately**
+* **destination (write register) = RT bits = D2–D1** (as you requested for WA)
+
+So for opcode `001`:
+
+* **rs = D4 D3**
+* **offset = D2 D1 D0**
+* **write destination WA = D2 D1 (RT field you’re using)**
+* **ALU selector is forced to ADD (0000)** (because LW)
+
+----------------------------------------------------------------------------------------------------------------
+# 3) Opcode = `010`  → **SW (store word)**
+
+**Purpose:** address = Reg[rs] + offset, then store data to memory
+
+* **rs (base register) = D4–D3**
+* **offset (signed 3-bit) = D2–D0**
+* no register write
+
+So for opcode `010`:
+
+* **rs = D4 D3**
+* **offset = D2 D1 D0**
+* **WA unused (RegWrite=0)**
+* **ALU selector forced to ADD (0000)**
+
+----------------------------------------------------------------------------------------------------------------
+# 4) Opcode = `011`  → **BEQ (branch equal)**
+
+**Purpose:** compare two registers (Reg[rs] vs Reg[rt]) using SUB
+
+* **rs = D4–D3**
+* **rt = D2–D1**
+* **D0 don’t care**
+
+So for opcode `011`:
+
+* **rs = D4 D3**
+* **rt = D2 D1**
+* **ALU selector forced to SUB (0001)**
+
+---
+
+# Quick summary table
+
+| Opcode (D7–D5) | Meaning | D4–D3  | D2–D1           | D2–D0      | D4–D1            |
+| -------------- | ------- | ------ | --------------- | ---------- | ---------------- |
+| 000            | ALU op  | —      | —               | —          | **ALU selector** |
+| 001            | LW      | **rs** | (used as WA=rt) | **offset** | not used         |
+| 010            | SW      | **rs** | —               | **offset** | not used         |
+| 011            | BEQ     | **rs** | **rt**          | —          | not used         |
+
+---
+
+## Your specific question: “when opcode 000–011 which is rs/rt/rd/offset/selector?”
+
+* **Opcode 000:** selector = D4–D1; rs/rt/rd/offset = none
+* **Opcode 001 (lw):** rs = D4–D3; offset = D2–D0; your WA(dest)=D2–D1
+* **Opcode 010 (sw):** rs = D4–D3; offset = D2–D0
+* **Opcode 011 (beq):** rs = D4–D3; rt = D2–D1
+
+If you want, I can rewrite your EEPROM table into a clean “instruction meaning” list (Addr → opcode/rs/rt/offset/funct).
+

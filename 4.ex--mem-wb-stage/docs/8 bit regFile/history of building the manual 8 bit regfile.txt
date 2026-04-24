@@ -1,0 +1,248 @@
+
+
+# Manual 8-Bit Register File Implementation (4x8) for ID/EX Stage
+
+## 1. Overview and Components
+
+This document details the complete implementation of an 8-bit wide, 4-register file for the ID/EX stage of a processor. Since the 74LS670 register file IC is unavailable in Proteus, we construct an equivalent 4x8 register file (4 registers, each 8 bits wide) using standard logic ICs. The design provides separate read and write addressing for efficient processor operation.
+
+**Required Components:**
+- **Eight** 74LS173 Quad D Flip-Flops (for 32 bits of storage: 4 registers × 8 bits)
+- One 74LS139 Dual 2-to-4 Line Decoder (for decoding write addresses)
+- **Four** 74LS153 Dual 4-to-1 Multiplexers (for selecting the 8-bit read data)
+- Standard Power (VCC, GND) and input/output components
+
+**IC Naming Convention:**
+To make wiring clear, we will name the eight 74LS173 ICs as follows:
+*   **REG0_L:** Holds the lower 4 bits (D0-D3) of Register 0
+*   **REG0_H:** Holds the upper 4 bits (D4-D7) of Register 0
+*   **REG1_L:** Holds the lower 4 bits (D0-D3) of Register 1
+*   **REG1_H:** Holds the upper 4 bits (D4-D7) of Register 1
+*   **REG2_L:** Holds the lower 4 bits (D0-D3) of Register 2
+*   **REG2_H:** Holds the upper 4 bits (D4-D7) of Register 2
+*   **REG3_L:** Holds the lower 4 bits (D0-D3) of Register 3
+*   **REG3_H:** Holds the upper 4 bits (D4-D7) of Register 3
+
+## 2. Pin Configuration Reference
+
+### 74LS173 Quad D Flip-Flop
+| Pin Number | Pin Name | Description |
+|------------|----------|-------------|
+| 1 | OE1 | Output Enable Input 1 (Active LOW) |
+| 2 | OE2 | Output Enable Input 2 (Active LOW) |
+| 3 | Q0 | Data Output Pin Q0 |
+| 4 | Q1 | Data Output Pin Q1 |
+| 5 | Q2 | Data Output Pin Q2 |
+| 6 | Q3 | Data Output Pin Q3 |
+| 7 | CP | Clock Pulse Input (Positive-Edge Triggered) |
+| 8 | GND | Ground Pin |
+| 9 | IE1' | Input Enable Pin 1 (Active LOW) |
+| 10 | IE2' | Input Enable Pin 2 (Active LOW) |
+| 11 | D3 | Data Input D3 |
+| 12 | D2 | Data Input D2 |
+| 13 | D1 | Data Input D1 |
+| 14 | D0 | Data Input D0 |
+| 15 | MR | Master Reset Input (Active HIGH) |
+| 16 | VCC | Chip Supply Voltage (+5V) |
+
+### 74LS153 Dual 4-to-1 Multiplexer
+| Pin Number | Pin Name | Description |
+|------------|----------|-------------|
+| 1 | 1E | Enable for Section 1 (Active LOW) |
+| 2 | B | Select Input B |
+| 3 | 1X3 | Section 1 Data Input 3 |
+| 4 | 1X2 | Section 1 Data Input 2 |
+| 5 | 1X1 | Section 1 Data Input 1 |
+| 6 | 1X0 | Section 1 Data Input 0 |
+| 7 | 1Y | Section 1 Output |
+| 8 | GND | Ground Pin |
+| 9 | 2Y | Section 2 Output |
+| 10 | 2X0 | Section 2 Data Input 0 |
+| 11 | 2X1 | Section 2 Data Input 1 |
+| 12 | 2X2 | Section 2 Data Input 2 |
+| 13 | 2X3 | Section 2 Data Input 3 |
+| 14 | A | Select Input A |
+| 15 | 2E | Enable for Section 2 (Active LOW) |
+| 16 | VCC | Chip Supply Voltage (+5V) |
+
+## 3. Write Logic Implementation
+
+### 3.1 Common 8-Bit Data Bus Connections
+The 8-bit data bus (D7-D0) must be connected to the inputs of all eight 74LS173 ICs simultaneously.
+
+**Lower Nibble Bus (D3-D0):**
+*   Connect **D0** to Pin 14 of **REG0_L, REG1_L, REG2_L, and REG3_L**.
+*   Connect **D1** to Pin 13 of **REG0_L, REG1_L, REG2_L, and REG3_L**.
+*   Connect **D2** to Pin 12 of **REG0_L, REG1_L, REG2_L, and REG3_L**.
+*   Connect **D3** to Pin 11 of **REG0_L, REG1_L, REG2_L, and REG3_L**.
+
+**Upper Nibble Bus (D7-D4):**
+*   Connect **D4** to Pin 14 of **REG0_H, REG1_H, REG2_H, and REG3_H**.
+*   Connect **D5** to Pin 13 of **REG0_H, REG1_H, REG2_H, and REG3_H**.
+*   Connect **D6** to Pin 12 of **REG0_H, REG1_H, REG2_H, and REG3_H**.
+*   Connect **D7** to Pin 11 of **REG0_H, REG1_H, REG2_H, and REG3_H**.
+
+### 3.2 Write Selection (74LS139 Decoder)
+The 74LS139 decoder selects which register pair to write to. **Each decoder output must connect to BOTH the low and high nibble registers.**
+
+| 74LS139 Pin | Signal Name | Connects to Enable Pins (IE1' & IE2') of... |
+|-------------|-------------|---------------------------------------------|
+| Pin 4 | Y0' | **REG0_L** (Pins 9 & 10) AND **REG0_H** (Pins 9 & 10) |
+| Pin 5 | Y1' | **REG1_L** (Pins 9 & 10) AND **REG1_H** (Pins 9 & 10) |
+| Pin 6 | Y2' | **REG2_L** (Pins 9 & 10) AND **REG2_H** (Pins 9 & 10) |
+| Pin 7 | Y3' | **REG3_L** (Pins 9 & 10) AND **REG3_H** (Pins 9 & 10) |
+
+**Note:** For each of the eight 74LS173 ICs, bridge its Pin 9 and Pin 10 together so the single decoder output can control both.
+
+### 3.3 Control Bus for Write Operations
+- **Clock Pulse (CP):** Connect Pin 7 of all **eight** 74LS173 ICs (REG0_L to REG3_H) to a single common clock source.
+- **Master Reset (MR):** Connect Pin 15 of all **eight** 74LS173 ICs to a single reset switch (tie to GND for normal operation).
+- **Output Enable (OE1 & OE2):** Connect Pin 1 and Pin 2 of all **eight** 74LS173 ICs permanently to ground (GND). This ensures their outputs are always driving the multiplexer inputs.
+
+## 4. Read Logic Implementation
+
+The read logic requires **four** 74LS153 multiplexers to produce an 8-bit output. Each MUX handles two bits of the final output.
+
+### 4.1 Mux IC Assignments
+- **MUX 1:** Provides outputs **Q0** and **Q1**
+- **MUX 2:** Provides outputs **Q2** and **Q3**
+- **MUX 3:** Provides outputs **Q4** and **Q5**
+- **MUX 4:** Provides outputs **Q6** and **Q7**
+
+### 4.2 MUX 1 Connections (Outputs Q0, Q1)
+| MUX 1 Pin | Function | Connect To... |
+|-----------|----------|----------------|
+| Pin 6 (1X0) | Input for Select 00 | **REG0_L**, Pin 3 (Q0) |
+| Pin 5 (1X1) | Input for Select 01 | **REG1_L**, Pin 3 (Q0) |
+| Pin 4 (1X2) | Input for Select 10 | **REG2_L**, Pin 3 (Q0) |
+| Pin 3 (1X3) | Input for Select 11 | **REG3_L**, Pin 3 (Q0) |
+| Pin 10 (2X0)| Input for Select 00 | **REG0_L**, Pin 4 (Q1) |
+| Pin 11 (2X1)| Input for Select 01 | **REG1_L**, Pin 4 (Q1) |
+| Pin 12 (2X2)| Input for Select 10 | **REG2_L**, Pin 4 (Q1) |
+| Pin 13 (2X3)| Input for Select 11 | **REG3_L**, Pin 4 (Q1) |
+
+### 4.3 MUX 2 Connections (Outputs Q2, Q3)
+| MUX 2 Pin | Function | Connect To... |
+|-----------|----------|----------------|
+| Pin 6 (1X0) | Input for Select 00 | **REG0_L**, Pin 5 (Q2) |
+| Pin 5 (1X1) | Input for Select 01 | **REG1_L**, Pin 5 (Q2) |
+| Pin 4 (1X2) | Input for Select 10 | **REG2_L**, Pin 5 (Q2) |
+| Pin 3 (1X3) | Input for Select 11 | **REG3_L**, Pin 5 (Q2) |
+| Pin 10 (2X0)| Input for Select 00 | **REG0_L**, Pin 6 (Q3) |
+| Pin 11 (2X1)| Input for Select 01 | **REG1_L**, Pin 6 (Q3) |
+| Pin 12 (2X2)| Input for Select 10 | **REG2_L**, Pin 6 (Q3) |
+| Pin 13 (2X3)| Input for Select 11 | **REG3_L**, Pin 6 (Q3) |
+
+### 4.4 MUX 3 Connections (Outputs Q4, Q5)
+| MUX 3 Pin | Function | Connect To... |
+|-----------|----------|----------------|
+| Pin 6 (1X0) | Input for Select 00 | **REG0_H**, Pin 3 (Q0) |
+| Pin 5 (1X1) | Input for Select 01 | **REG1_H**, Pin 3 (Q0) |
+| Pin 4 (1X2) | Input for Select 10 | **REG2_H**, Pin 3 (Q0) |
+| Pin 3 (1X3) | Input for Select 11 | **REG3_H**, Pin 3 (Q0) |
+| Pin 10 (2X0)| Input for Select 00 | **REG0_H**, Pin 4 (Q1) |
+| Pin 11 (2X1)| Input for Select 01 | **REG1_H**, Pin 4 (Q1) |
+| Pin 12 (2X2)| Input for Select 10 | **REG2_H**, Pin 4 (Q1) |
+| Pin 13 (2X3)| Input for Select 11 | **REG3_H**, Pin 4 (Q1) |
+
+### 4.5 MUX 4 Connections (Outputs Q6, Q7)
+| MUX 4 Pin | Function | Connect To... |
+|-----------|----------|----------------|
+| Pin 6 (1X0) | Input for Select 00 | **REG0_H**, Pin 5 (Q2) |
+| Pin 5 (1X1) | Input for Select 01 | **REG1_H**, Pin 5 (Q2) |
+| Pin 4 (1X2) | Input for Select 10 | **REG2_H**, Pin 5 (Q2) |
+| Pin 3 (1X3) | Input for Select 11 | **REG3_H**, Pin 5 (Q2) |
+| Pin 10 (2X0)| Input for Select 00 | **REG0_H**, Pin 6 (Q3) |
+| Pin 11 (2X1)| Input for Select 01 | **REG1_H**, Pin 6 (Q3) |
+| Pin 12 (2X2)| Input for Select 10 | **REG2_H**, Pin 6 (Q3) |
+| Pin 13 (2X3)| Input for Select 11 | **REG3_H**, Pin 6 (Q3) |
+
+### 4.6 Common Control Connections for ALL 74LS153 MUXes
+**These signals must be connected in parallel to ALL FOUR multiplexers (MUX 1, 2, 3, and 4).**
+
+| Signal | Connect to these pins on MUX 1, 2, 3, and 4 |
+|--------|---------------------------------------------|
+| Read Address RA0 | Pin 14 (A) |
+| Read Address RA1 | Pin 2 (B) |
+| Read Enable RE' | Pin 1 (1E) and Pin 15 (2E) |
+
+### 4.7 Final 8-Bit Output
+The final 8-bit output (Q7-Q0) is taken from the outputs of the four multiplexers:
+- **Q0:** Pin 7 (1Y) of **MUX 1**
+- **Q1:** Pin 9 (2Y) of **MUX 1**
+- **Q2:** Pin 7 (1Y) of **MUX 2**
+- **Q3:** Pin 9 (2Y) of **MUX 2**
+- **Q4:** Pin 7 (1Y) of **MUX 3**
+- **Q5:** Pin 9 (2Y) of **MUX 3**
+- **Q6:** Pin 7 (1Y) of **MUX 4**
+- **Q7:** Pin 9 (2Y) of **MUX 4**
+
+## 5. Operation Guide
+
+### 5.1 Writing 8-Bit Data to a Register
+1.  Set the 8-bit data you want to write on the common data bus (D7-D0).
+2.  Set the 2-bit write address (WA0, WA1) to select the target register (e.g., `00` for REG0, `01` for REG1, etc.).
+3.  Ensure the Master Reset (MR) is LOW for normal operation.
+4.  Apply a positive edge to the Clock Pulse (CP). The data on the bus will be written into the selected register pair (e.g., for address `00`, data is written to REG0_L and REG0_H).
+
+### 5.2 Reading 8-Bit Data from a Register
+1.  Set the Read Enable (RE') signal to LOW (active).
+2.  Set the 2-bit read address (RA0, RA1) to select the source register.
+3.  The 8-bit output will appear on the Q7-Q0 pins as defined in section 4.7.
+
+## 6. Troubleshooting Tips
+
+1.  **Incorrect Output Data (e.g., wrong bits, swapped nibbles):** This is the most common issue. Systematically verify the 32 connections between the 8 register outputs (Q0-Q3) and the 32 multiplexer inputs (1X0-2X3) across all four MUXes. Double-check sections 4.2 through 4.5. Ensure REGX_H outputs go to MUX 3 & 4, and REGX_L outputs go to MUX 1 & 2.
+2.  **Unable to Write Data:** Verify that each decoder output (from the 74LS139) is correctly connected to **both** the low and high nibble registers for that address. Check that the clock signal is reaching all 8 registers. Ensure the write address (WA0, WA1) is connected to the 74LS139's address pins.
+3.  **No Output:** Ensure the Read Enable (RE') is LOW and is correctly wired to Pins 1 and 15 of all four MUXes. Confirm that the OE pins (1 & 2) on all 74LS173s are tied to GND.
+4.  **Only Lower or Upper Nibble Outputs Work:** You have likely miswired the control signals. Check that RA0 and RA1 are connected to **all four** MUXes. Check that the Read Enable (RE') is connected to **all four** MUXes.
+
+
+
+
+=======================================================================================================
+
+
+
+Of course. Now that your 8-bit register file is designed in Proteus, you need a systematic test plan to verify its functionality. This table provides a step-by-step procedure with demo data, showing exactly what to set on all your control pins at each stage.
+
+### How to Use This Test Table
+
+1.  **Setup:** Connect your Proteus circuit's control pins (`WA0`, `WA1`, `RA0`, `RA1`, `RE'`, `CP`, `MR`) to logic switches or a pattern generator. Connect the 8-bit Data Bus (D7-D0) to switches. Connect the 8-bit Output (Q7-Q0) to logic probes or LEDs.
+2.  **Execute Sequentially:** Follow the steps in order. For each step, set your switches/pins to the values shown in the table.
+3.  **Observe and Verify:** After setting the pins for a step, observe the output on your probes/LEDs and check if it matches the "Expected Output" column.
+
+---
+
+### 8-Bit Register File Write/Read Test Plan
+
+**Demo Data to be Written:**
+*   **REG0:** `0x3A` (Binary: `0011 1010`)
+*   **REG1:** `0xFF` (Binary: `1111 1111`)
+*   **REG2:** `0x00` (Binary: `0000 0000`)
+*   **REG3:** `0x5C` (Binary: `0101 1100`)
+
+| Step |      Operation       |DataBus(D7-D0)|WA1 WA0| RA1 RA0 |RE'| CP      | Expected Output (Q7-Q0) | Comments & Explanation |
+|:----:|:---------------------|:---------: |:-------:|:-------:|:-:|:-------:|:-----------------------:|:-----------------------|
+| 1    | **Master Reset**     |  XXXX XXXX | 	 X X | 	   X X | X | X       | `0000 0000`             | Set MR pin HIGH (1), then back to LOW (0). This clears all 8 registers to 0. |
+| 2    | **Write to REG0**    | `0011 1010`|	`00` | 	   X X | X | `0 → 1` | X X X X X X X X         | 1. Set data bus to `0x3A`. 2. Set write address to `00`. 3. Apply a positive edge to CP. Data is latched into REG0_L and REG0_H. |
+| 3    | **Write to REG1**    | `1111 1111`| 	`01` | 	   X X | X | `0 → 1` | X X X X X X X X         | 1. Set data bus to `0xFF`. 2. Set write address to `01`. 3. Apply a positive edge to CP. Data is latched into REG1_L and REG1_H. |
+| 4    | **Write to REG2**    | `0000 0000`| 	`10` | 	   X X | X | `0 → 1` | X X X X X X X X         | 1. Set data bus to `0x00`. 2. Set write address to `10`. 3. Apply a positive edge to CP. Data is latched into REG2_L and REG2_H. |
+| 5    | **Write to REG3**    | `0101 1100`| 	`11` | 	   X X | X | `0 → 1` | X X X X X X X X         | 1. Set data bus to `0x5C`. 2. Set write address to `11`. 3. Apply a positive edge to CP. Data is latched into REG3_L and REG3_H. |
+| 6    | **Read from REG0**   |  XXXX XXXX |  	 X X | 	   `00`|`0`| X       | `0011 1010`             | 1. Set read address to `00`. 2. Set RE' LOW (0) to enable output. The MUXes select REG0's data. |
+| 7    | **Read from REG1**   |  XXXX XXXX | 	 X X |	   `01`|`0`| X       | `1111 1111`             | 1. Change read address to `01`. 2. RE' remains LOW. The MUXes now select REG1's data. |
+| 8    | **Read from REG2**   |  XXXX XXXX | 	 X X |	   `10`|`0`| X       | `0000 0000`             | 1. Change read address to `10`. 2. RE' remains LOW. The MUXes now select REG2's data. |
+| 9    | **Read from REG3**   |  XXXX XXXX |  	 X X |	   `11`|`0`| X       | `0101 1100`             | 1. Change read address to `11`. 2. RE' remains LOW. The MUXes now select REG3's data. |
+| 10   | **Test Read Disable**|  XXXX XXXX |  	 X X |	   `00`|`1`| X       | `ZZZZ ZZZZ`             | 1. Keep read address at `00`. 2. Set RE' HIGH (1). The MUX outputs go to high-impedance state. In Proteus, this may show as 'X' or floating LEDs. |
+
+
+
+---
+
+### Key Things to Observe During the Test
+
+*   **During Write Steps (2-5):** The output (Q7-Q0) should not change. This confirms that the write path and read path are independent.
+*   **During Read Steps (6-9):** The output should change instantly as you switch the `RA1` and `RA0` address lines (as long as `RE'` is LOW). This confirms the multiplexers are correctly selecting the addressed register.
+*   **Step 10 is Crucial:** This verifies that your `Read Enable` control line works correctly. A high-impedance (`Z`) output means the register file is not driving the bus, which is essential for connecting it to other components in a larger system.
+
+By successfully completing this test, you will have fully verified that your 8-bit register file can correctly write data to any of its four registers and then read that data back accurately on demand.

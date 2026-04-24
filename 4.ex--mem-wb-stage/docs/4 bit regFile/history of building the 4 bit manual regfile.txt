@@ -1,0 +1,161 @@
+
+
+# Manual Register File Implementation (4x4) for ID/EX Stage
+
+## 1. Overview and Components
+
+Since the 74LS670 register file IC is not available in Proteus, this implementation creates an equivalent 4x4 register file using standard logic ICs. The design provides 4 registers, each storing 4 bits of data, with separate read and write addressing.
+
+**Required Components:**
+- Four 74LS173 Quad D Flip-Flops (for 16 bits of storage)
+- One 74LS139 Dual 2-to-4 Line Decoder (for decoding write addresses)
+- Two 74LS153 Dual 4-to-1 Multiplexers (for selecting the read data)
+- Standard Power (VCC, GND) and input/output components
+
+## 2. Pin Configuration Reference
+
+### 74LS173 Quad D Flip-Flop
+| Pin Num | Pin Name | Description |
+|---------|----------|-------------|
+|  1      | OE1      | Output Enable Input 1 (Active LOW) |
+|  2      | OE2      | Output Enable Input 2 (Active LOW) |
+|  3      | Q0       | Data Output Pin Q0 |
+|  4      | Q1       | Data Output Pin Q1 |
+|  5      | Q2       | Data Output Pin Q2 |
+|  6      | Q3       | Data Output Pin Q3 |
+|  7      | CP       | Clock Pulse Input (Positive-Edge Triggered) |
+|  8      | GND      | Ground Pin |
+|  9      | IE1'     | Input Enable Pin 1 (Active LOW) |
+| 10      | IE2'     | Input Enable Pin 2 (Active LOW) |
+| 11      | D3       | Data Input D3 |
+| 12      | D2       | Data Input D2 |
+| 13      | D1       | Data Input D1 |
+| 14      | D0       | Data Input D0 |
+| 15      | MR       | Master Reset Input (Active HIGH) |
+| 16      | VCC      | Chip Supply Voltage (+5V) |
+
+## 3. Write Logic Implementation
+
+### 3.1 Common Data/Write Bus Connections
+All four 74LS173 ICs share the same input lines:
+- Data Bit 0: Connect to Pin 14 (D0) of Reg0, Reg1, Reg2, and Reg3
+- Data Bit 1: Connect to Pin 13 (D1) of Reg0, Reg1, Reg2, and Reg3
+- Data Bit 2: Connect to Pin 12 (D2) of Reg0, Reg1, Reg2, and Reg3
+- Data Bit 3: Connect to Pin 11 (D3) of Reg0, Reg1, Reg2, and Reg3
+
+##The inputs for the 74LS139 Decoder should be connected to  Write Address signals in a specific order:
+Decoder Pin 2 (A) is your WA0 (Least Significant Bit).
+Decoder Pin 3 (B) is your WA1 (Most Significant Bit).
+This mapping allows to use standard binary counting for your addresses:
+
+|  WA1 |  WA0 |  Decoder Input (B, A)  |Output Selected	Register Selected |
+|-------------|------------------------|----------------------------------|
+   0	   0	  (0, 0)Y0	                  REG0
+   0	   1	  (0, 1)Y1	                  REG1
+   1	   0	  (1, 0)Y2	                  REG2
+   1	   1	  (1, 1)Y3	                  REG3
+
+### 3.2 Write Selection (74LS139 Decoder)
+The 74LS139 decoder selects which register to write to by pulling its enable pins LOW:
+- 74LS139 Pin 4 (Y0') → 74LS173 Reg0 Pins 9 & 10 (IE1' & IE2')
+- 74LS139 Pin 5 (Y1') → 74LS173 Reg1 Pins 9 & 10 (IE1' & IE2')
+- 74LS139 Pin 6 (Y2') → 74LS173 Reg2 Pins 9 & 10 (IE1' & IE2')
+- 74LS139 Pin 7 (Y3') → 74LS173 Reg3 Pins 9 & 10 (IE1' & IE2')
+
+Note: Ensure both Pin 9 and Pin 10 on each 74LS173 are connected together so the decoder output controls both.
+
+### 3.3 Control Bus for Write Operations
+- Clock Pulse (CP): Connect Pin 7 of all four 74LS173s to a single common clock source
+- Master Reset (MR): Connect Pin 15 of all four 74LS173s to a single reset switch
+- Output Enable (OE1 & OE2): Connect Pin 1 and Pin 2 of all 74LS173s to ground (GND)
+
+## 4. Read Logic Implementation
+
+### 4.1 Mux IC 1 Connections (provides outputs Q0 and Q1)
+| MUX Pin     | Function            | Should Connect To.|
+|-------------|---------------------|-------------------|
+| Pin 6 (1X0) | Input for Select 00 | REG 0, Pin 3 (Q0) |
+| Pin 5 (1X1) | Input for Select 01 | REG 1, Pin 3 (Q0) |
+| Pin 4 (1X2) | Input for Select 10 | REG 2, Pin 3 (Q0) |
+| Pin 3 (1X3) | Input for Select 11 | REG 3, Pin 3 (Q0) |
+| Pin 10 (2X0)| Input for Select 00 | REG 0, Pin 4 (Q1) |
+| Pin 11 (2X1)| Input for Select 01 | REG 1, Pin 4 (Q1) |
+| Pin 12 (2X2)| Input for Select 10 | REG 2, Pin 4 (Q1) |
+| Pin 13 (2X3)| Input for Select 11 | REG 3, Pin 4 (Q1) |
+
+### 4.2 Mux IC 2 Connections (provides outputs Q2 and Q3)
+| MUX Pin     | Function            | Should Connect To.|
+|-------------|---------------------|-------------------|
+| Pin 6 (1X0) | Input for Select 00 | REG 0, Pin 5 (Q2) |
+| Pin 5 (1X1) | Input for Select 01 | REG 1, Pin 5 (Q2) |
+| Pin 4 (1X2) | Input for Select 10 | REG 2, Pin 5 (Q2) |
+| Pin 3 (1X3) | Input for Select 11 | REG 3, Pin 5 (Q2) |
+| Pin 10 (2X0)| Input for Select 00 | REG 0, Pin 6 (Q3) |
+| Pin 11 (2X1)| Input for Select 01 | REG 1, Pin 6 (Q3) |
+| Pin 12 (2X2)| Input for Select 10 | REG 2, Pin 6 (Q3) |
+| Pin 13 (2X3)| Input for Select 11 | REG 3, Pin 6 (Q3) |
+
+### 4.3 Common Control Connections for 74LS153
+| Signal             | Mux IC 1 (Pins) | Mux IC 2 (Pins) | Notes                  |
+|--------------------|----------------|---------------|------------------|
+| Read Address RA0   | Pin 14 (A)     | Pin 14 (A) | Connect both Pin 14s to the RA0 signal line |
+| Read Address RA1   | Pin 2 (B)      | Pin 2 (B)  | Connect both Pin 2s to the RA1 signal line |
+| Read Enable RE'    | Pin 1 (1E)     | Pin 1 (1E) | Connect both Pin 1s to the RE' signal line |
+| Read Enable RE'    | Pin 15 (2E)    | Pin 15 (2E)| Connect both Pin 15s to the RE' signal line |
+| Output Q0/Q2       | Pin 7 (1Y)     | Pin 7 (1Y) | These form the Q0 and Q2 outputs respectively |
+| Output Q1/Q3       | Pin 9 (2Y)     | Pin 9 (2Y) | These form the Q1 and Q3 outputs respectively |
+
+## 5. Operation Guide
+
+### 5.1 Writing Data to a Register
+1. Set the 4-bit data on the common data bus (D0-D3)
+2. Set the write address (WA0, WA1) to select the target register
+3. Ensure the Master Reset (MR) is LOW for normal operation
+4. Apply a positive edge to the Clock Pulse (CP) to write the data
+
+### 5.2 Reading Data from a Register
+1. Set the Read Enable (RE') signal to LOW (active)
+2. Set the read address (RA0, RA1) to select the source register
+3. The 4-bit output will appear on:
+   - Q0: Pin 7 (1Y) of Mux IC 1
+   - Q1: Pin 9 (2Y) of Mux IC 1
+   - Q2: Pin 7 (1Y) of Mux IC 2
+   - Q3: Pin 9 (2Y) of Mux IC 2
+
+## 6. Troubleshooting Tips
+
+1. **Incorrect Output Data**: Check the connections between register outputs and multiplexer inputs. This is the most common source of errors.
+
+2. **Unable to Write Data**: Verify that:
+   - The decoder outputs are correctly connected to the register enable pins
+   - The clock signal is properly connected to all registers
+   - The write address is correctly set
+
+3. **No Output**: Check that:
+   - The Read Enable (RE') signal is LOW
+   - The output enable pins (OE1, OE2) on all 74LS173s are connected to ground
+   - Power and ground connections are secure
+
+4. **Unexpected Behavior**: Ensure that:
+   - The Master Reset (MR) is LOW during normal operation
+   - All control signals are stable before the clock edge
+
+This implementation provides a fully functional 4x4 register file equivalent to the 74LS670, suitable for use in the ID/EX stage of a processor implementation in Proteus.
+
+
+Testing with values suppose this is the data i wrote
+
+|  WA1  |  WA0  |  Decoder Input (B, A)  |Output Selected |   Register Selected | D3     D2    D1   D0  |
+|-------|-------|------------------------|----------------|---------------------|-----------------------|
+|   0   |   0   |   (0, 0)                    Y0                    REG0           0     1     1     0
+|   0   |   1   |   (0, 1)                    Y1	            REG1           1     0     0     1
+|   1   |   0   |   (1, 0)                    Y2	            REG2           1     1     0     0
+|   1   |   1   |   (1, 1)                    Y3	            REG3           0     0     1     1
+
+Based on the values of RA0 and RA1, the multiplexers select one of the four registers and output its data.
+| RA1 | RA0 | Selected Register | Expected Output (Q3 Q2 Q1 Q0) |
+|-----|-----|-------------------|------------------------------|
+| 0   | 0   | REG0              | 0 1 1 0                      |
+| 0   | 1   | REG1              | 1 0 0 1                      |
+| 1   | 0   | REG2              | 1 1 0 0                      |
+| 1   | 1   | REG3              | 0 0 1 1                      |

@@ -1,0 +1,166 @@
+Got it — you want a **sign extender**, not zero extender, and you want the **exact pin-by-pin wiring** for:
+
+[
+\textbf{ALU_B[7:0]} = \text{MUX}(\text{ReadDataB[7:0]}, \text{SignExt[7:0]}, \text{select}=\text{ALUSrc})
+]
+
+We’ll still use **two 74LS157** for the 8-bit mux. The only change is how we build **SignExt[7:0]** from IR2..IR0.
+
+---
+
+# A) Sign extension for a 3-bit offset (IR2..IR0)
+
+### What “sign extension” means here
+
+* Your offset is 3 bits: **IR2 IR1 IR0**
+* **IR2 is the sign bit**
+
+  * IR2=0 → positive (0..+3)
+  * IR2=1 → negative (−4..−1) in 2’s complement 3-bit form
+
+So sign extension to 8 bits means:
+
+* **SignExt0 = IR0**
+* **SignExt1 = IR1**
+* **SignExt2 = IR2**
+* **SignExt3 = IR2**
+* **SignExt4 = IR2**
+* **SignExt5 = IR2**
+* **SignExt6 = IR2**
+* **SignExt7 = IR2**
+
+✅ So unlike zero-extend, the upper five bits are **copies of IR2**, not GND.
+
+### Quick examples
+
+* offset = `011` (+3) → SignExt = `0000 0011`
+* offset = `101` (−3) → SignExt = `1111 1101` ✅
+
+No IC needed: it’s just wiring.
+
+---
+
+# B) 8-bit 2:1 mux for ALU_B using two 74LS157
+
+We will do:
+
+* **A inputs = ReadDataB**
+* **B inputs = SignExt**
+* **SEL = ALUSrc**
+* **/G = 0 (enabled)**
+
+74LS157 behavior:
+
+* SEL=0 → output = A inputs
+* SEL=1 → output = B inputs
+
+So:
+
+* **ALUSrc=0 → ALU_B = ReadDataB**
+* **ALUSrc=1 → ALU_B = SignExt(offset)**
+
+---
+
+## 1) U_BMUX_L = 74LS157 for bits 0–3
+
+### Power + control
+
+* pin16 → +5V
+* pin8  → GND
+* pin15 (/G) → **GND** (always enabled)
+* pin1 (SEL) → **ALUSrc**
+
+### Bit0 (channel 1)
+
+* pin2 (A1)  ← ReadDataB0
+* pin3 (B1)  ← SignExt0 (= IR0)
+* pin4 (Y1)  → **ALU_B0**
+
+### Bit1 (channel 2)
+
+* pin5 (A2)  ← ReadDataB1
+* pin6 (B2)  ← SignExt1 (= IR1)
+* pin7 (Y2)  → **ALU_B1**
+
+### Bit2 (channel 3)
+
+* pin11 (A3) ← ReadDataB2
+* pin10 (B3) ← SignExt2 (= IR2)
+* pin9 (Y3)  → **ALU_B2**
+
+### Bit3 (channel 4)
+
+* pin14 (A4) ← ReadDataB3
+* pin13 (B4) ← SignExt3 (= IR2)
+* pin12 (Y4) → **ALU_B3**
+
+---
+
+## 2) U_BMUX_H = 74LS157 for bits 4–7
+
+### Power + control
+
+* pin16 → +5V
+* pin8  → GND
+* pin15 (/G) → **GND**
+* pin1 (SEL) → **ALUSrc** (same line)
+
+### Bit4 (channel 1)
+
+* pin2 (A1)  ← ReadDataB4
+* pin3 (B1)  ← SignExt4 (= IR2)
+* pin4 (Y1)  → **ALU_B4**
+
+### Bit5 (channel 2)
+
+* pin5 (A2)  ← ReadDataB5
+* pin6 (B2)  ← SignExt5 (= IR2)
+* pin7 (Y2)  → **ALU_B5**
+
+### Bit6 (channel 3)
+
+* pin11 (A3) ← ReadDataB6
+* pin10 (B3) ← SignExt6 (= IR2)
+* pin9 (Y3)  → **ALU_B6**
+
+### Bit7 (channel 4)
+
+* pin14 (A4) ← ReadDataB7
+* pin13 (B4) ← SignExt7 (= IR2)
+* pin12 (Y4) → **ALU_B7**
+
+---
+
+# C) Connect ALU_B bus to your multi-bit ALU chain
+
+Now connect:
+
+* **ALU_B0..ALU_B7** → B inputs of your replicated 1-bit ALU blocks (bit0..bit7)
+
+If you’re still testing only 1-bit ALU:
+
+* ALU_B0 → B input of the single ALU block
+
+---
+
+# D) Proteus test checklist (fast verification)
+
+### Test 1: ALUSrc=0 (register mode)
+
+* Force ALUSrc = 0
+* Change ReadDataB switches/register contents
+  ✅ ALU_B must follow ReadDataB exactly.
+
+### Test 2: ALUSrc=1 (offset mode)
+
+* Force ALUSrc = 1
+* Set IR2..IR0 to:
+
+  * `011` → expect ALU_B = `0000 0011`
+  * `101` → expect ALU_B = `1111 1101` ✅ sign extended
+
+If that works, your ALU B-selection path is correct.
+
+---
+
+If you say what bit-width you’re extending the ALU to (4-bit or 8-bit), I’ll next give you the **carry chaining wiring** between your replicated 1-bit ALUs and how to expose **Zero flag** for BEQ.

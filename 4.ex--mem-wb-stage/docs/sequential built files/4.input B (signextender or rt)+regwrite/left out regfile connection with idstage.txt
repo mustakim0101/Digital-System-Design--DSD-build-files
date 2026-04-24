@@ -1,0 +1,46 @@
+do i connect regwrite signal to the decoder139 pin 1 enable?
+
+
+=================================================================================
+
+Yes — **RegWrite should control the 74LS139 enable**, but you must connect it with the **correct polarity**, because the 74LS139 enable is **active-LOW**.
+
+### ✅ Rule
+
+* **RegWrite = 1** → decoder **enabled** → one output goes LOW → selected register’s IE pins go LOW → register can capture on clock edge.
+* **RegWrite = 0** → decoder **disabled** → all outputs HIGH → no register can be written.
+
+---
+
+## How to wire it (most common case)
+
+### If your 74LS139 enable pin is **E (active-LOW)** (often pin 1 for that half):
+
+* Connect: **E = NOT(RegWrite)**
+
+So you need **one inverter (74LS04)**:
+
+* RegWrite → 74LS04 input
+* 74LS04 output (= ¬RegWrite) → **74LS139 Enable (pin 1)**
+
+✅ Behavior:
+
+* RegWrite=1 → ¬RegWrite=0 → Enable LOW → decoder ON
+* RegWrite=0 → ¬RegWrite=1 → Enable HIGH → decoder OFF
+
+---
+
+## Quick Proteus check
+
+Put an LED on any 74LS139 output:
+
+* When RegWrite=0, outputs should stay HIGH (LED off if active-low LED wiring)
+* When RegWrite=1, exactly one output should go LOW depending on WA1/WA0.
+
+---
+
+### Don’t do this
+
+❌ Don’t connect RegWrite directly to the enable pin (it will invert the behavior and you’ll write when you shouldn’t).
+
+If you tell me the exact pin label Proteus shows on your 74LS139 (like “1E” / “G” / “EN”), I can confirm the polarity, but in almost all 74LS139 symbols **enable is active-low**, so the inverter method above is correct.

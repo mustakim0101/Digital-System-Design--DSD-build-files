@@ -1,0 +1,470 @@
+alu table selectors
+0000 - add
+0001 - subtnact
+0010 - multiply
+0011 - lett shifh
+0100 - right  shift
+0101 - rotate lett
+0110 -rotate right
+0111 - and
+1000 -or
+1001 - xor
+1010- xnor
+1011- nand
+1100-nor
+1101- gretaer than
+1110 - equal
+1111 - less than
+
+if stage eeprom
+
+A10 A9 A8 A7 A6 A5 | A4 A3 A2 A1 A0 || D7 D6 D5 | D4 D3 D2 D1 | D0
+----------------------------------------------------------------
+ 0  0  0  0  0  0  | 0  0  0  0  0 || 0  0  0 | 0  0  0  0 | 0
+ 0  0  0  0  0  0  | 0  0  0  0  1 || 0  0  0 | 0  0  0  1 | 1
+ 0  0  0  0  0  0  | 0  0  0  1  0 || 0  0  0 | 0  0  1  0 | 0
+ 0  0  0  0  0  0  | 0  0  0  1  1 || 0  0  0 | 0  0  1  1 | 1
+ 0  0  0  0  0  0  | 0  0  1  0  0 || 0  0  0 | 0  1  0  0 | 0
+ 0  0  0  0  0  0  | 0  0  1  0  1 || 0  0  0 | 0  1  0  1 | 1
+ 0  0  0  0  0  0  | 0  0  1  1  0 || 0  0  0 | 0  1  1  0 | 0
+ 0  0  0  0  0  0  | 0  0  1  1  1 || 0  0  0 | 0  1  1  1 | 1
+ 0  0  0  0  0  0  | 0  1  0  0  0 || 0  0  0 | 1  0  0  0 | 0
+ 0  0  0  0  0  0  | 0  1  0  0  1 || 0  0  0 | 1  0  0  1 | 1
+ 0  0  0  0  0  0  | 0  1  0  1  0 || 0  0  0 | 1  0  1  0 | 0
+ 0  0  0  0  0  0  | 0  1  0  1  1 || 0  0  0 | 1  0  1  1 | 1
+ 0  0  0  0  0  0  | 0  1  1  0  0 || 0  0  0 | 1  1  0  0 | 0
+ 0  0  0  0  0  0  | 0  1  1  0  1 || 0  0  0 | 1  1  0  1 | 1
+ 0  0  0  0  0  0  | 0  1  1  1  0 || 0  0  0 | 1  1  1  0 | 0
+ 0  0  0  0  0  0  | 0  1  1  1  1 || 0  0  0 | 1  1  1  1 | 1
+----------------------------------------------------------------
+ 0  0  0  0  0  0  | 1  0  0  0  0 || 0  0  1 | 0  0  0  0 | 0
+ 0  0  0  0  0  0  | 1  0  0  0  1 || 0  0  1 | 0  1  0  0 | 1
+ 0  0  0  0  0  0  | 1  0  0  1  0 || 0  0  1 | 1  0  0  0 | 0
+ 0  0  0  0  0  0  | 1  0  0  1  1 || 0  0  1 | 1  1  0  0 | 1
+----------------------------------------------------------------
+ 0  0  0  0  0  0  | 1  0  1  0  0 || 0  1  0 | 0  0  0  0 | 0
+ 0  0  0  0  0  0  | 1  0  1  0  1 || 0  1  0 | 0  1  0  0 | 1
+ 0  0  0  0  0  0  | 1  0  1  1  0 || 0  1  0 | 1  0  0  0 | 0
+ 0  0  0  0  0  0  | 1  0  1  1  1 || 0  1  0 | 1  1  0  0 | 1
+----------------------------------------------------------------
+ 0  0  0  0  0  0  | 1  1  0  0  0 || 0  1  1 | 0  0  0  0 | 0
+ 0  0  0  0  0  0  | 1  1  0  0  1 || 0  1  1 | 0  0  1  0 | 1
+ 0  0  0  0  0  0  | 1  1  0  1  0 || 0  1  1 | 0  1  0  0 | 0
+ 0  0  0  0  0  0  | 1  1  0  1  1 || 0  1  1 | 0  1  1  0 | 1
+
+:2000000000030407080B0C0F10131417181B1C1F20293039404950596065686D000000006A
+:00000001FF
+==================================================================================================
+==================================================================================================
+==================================================================================================
+A10 A9 A8 A7 A6 A5 | A4 A3 A2 A1 A0 || D7 D6 D5 | D4 D3 D2 D1 | D0
+----------------------------------------------------------------
+ 0  0  0  0  0  0  | 0  0  0  0  0 || 0  0  0 | 0  0  0  0 | 0
+ 0  0  0  0  0  0  | 0  0  0  0  1 || 0  0  0 | 0  0  0  1 | 1
+ 0  0  0  0  0  0  | 0  0  0  1  0 || 0  0  0 | 0  0  1  0 | 0
+ 0  0  0  0  0  0  | 0  0  0  1  1 || 0  0  0 | 0  0  1  1 | 1
+ 0  0  0  0  0  0  | 0  0  1  0  0 || 0  0  0 | 0  1  0  0 | 0
+ 0  0  0  0  0  0  | 0  0  1  0  1 || 0  0  0 | 0  1  0  1 | 1
+ 0  0  0  0  0  0  | 0  0  1  1  0 || 0  0  0 | 0  1  1  0 | 0
+ 0  0  0  0  0  0  | 0  0  1  1  1 || 0  0  0 | 0  1  1  1 | 1
+ 0  0  0  0  0  0  | 0  1  0  0  0 || 0  0  0 | 1  0  0  0 | 0
+ 0  0  0  0  0  0  | 0  1  0  0  1 || 0  0  0 | 1  0  0  1 | 1
+ 0  0  0  0  0  0  | 0  1  0  1  0 || 0  0  0 | 1  0  1  0 | 0
+ 0  0  0  0  0  0  | 0  1  0  1  1 || 0  0  0 | 1  0  1  1 | 1
+ 0  0  0  0  0  0  | 0  1  1  0  0 || 0  0  0 | 1  1  0  0 | 0
+ 0  0  0  0  0  0  | 0  1  1  0  1 || 0  0  0 | 1  1  0  1 | 1
+ 0  0  0  0  0  0  | 0  1  1  1  0 || 0  0  0 | 1  1  1  0 | 0
+ 0  0  0  0  0  0  | 0  1  1  1  1 || 0  0  0 | 1  1  1  1 | 1
+----------------------------------------------------------------
+ 0  0  0  0  0  0  | 1  0  0  0  0 || 0  0  1 | 0  0  1  0 | 0
+ 0  0  0  0  0  0  | 1  0  0  0  1 || 0  0  1 | 0  1  1  0 | 1
+ 0  0  0  0  0  0  | 1  0  0  1  0 || 0  0  1 | 1  0  0  0 | 0
+ 0  0  0  0  0  0  | 1  0  0  1  1 || 0  0  1 | 1  1  0  0 | 1
+----------------------------------------------------------------
+ 0  0  0  0  0  0  | 1  0  1  0  0 || 0  1  0 | 0  0  0  0 | 0
+ 0  0  0  0  0  0  | 1  0  1  0  1 || 0  1  0 | 0  1  0  0 | 1
+ 0  0  0  0  0  0  | 1  0  1  1  0 || 0  1  0 | 1  0  1  0 | 0
+ 0  0  0  0  0  0  | 1  0  1  1  1 || 0  1  0 | 1  1  1  0 | 1
+----------------------------------------------------------------
+ 0  0  0  0  0  0  | 1  1  0  0  0 || 0  1  1 | 0  0  0  0 | 0
+ 0  0  0  0  0  0  | 1  1  0  0  1 || 0  1  1 | 0  0  1  0 | 1
+ 0  0  0  0  0  0  | 1  1  0  1  0 || 0  1  1 | 0  1  0  0 | 0
+ 0  0  0  0  0  0  | 1  1  0  1  1 || 0  1  1 | 0  1  1  0 | 1
+
+:2000000000030407080B0C0F10131417181B1C1F242D30394049545D6065686D000000005A
+:00000001FF
+
+* **ALU = ¬Y0’**  (opcode = 000)
+* **LW  = ¬Y1’**  (opcode = 001)
+* **SW  = ¬Y2’**  (opcode = 010)
+* **BEQ = ¬Y3’**  (opcode = 011)
+* **LI  = ¬Y4’    (opcode = 100)
+
+| Opcode | Type | RA (Read A)                | RB (Read B)                | WA (Write Addr)         |
+| ------ | ---- | -------------------------- | -------------------------- | ----------------------- |
+| 000    | ALU  | 00 fixed                   | 01 fixed                   | 00 fixed                |
+| 001    | LW   | RS=IR4..IR3                | 01 fixed                   | RT=IR2..IR1             |
+| 010    | SW   | RS=IR4..IR3                | 01 fixed                   | don’t care (RegWrite=0) |
+| 011    | BEQ  | RS=IR4..IR3                | RT=IR2..IR1                | don’t care (RegWrite=0) |
+| 100    | LI   | 00 fixed (recommended)     | 01 fixed (recommended)     | RD=IR4..IR3             |
+
+
+
+
+| Opcode (D7–D5) | Instruction | RegWrite | MemRead | MemWrite | ALUSrc | MemtoReg | Branch | ALUOp1 | ALUOp0 | ALUOp |
+| -------------: | ----------- | -------: | ------: | -------: | -----: | -------: | -----: | -----: | -----: | ----- |
+|            000 | R-type/ALU  |        1 |       0 |        0 |      0 |        0 |      0 |      1 |      0 | 10    |
+|            001 | lw          |        1 |       1 |        0 |      1 |        1 |      0 |      0 |      0 | 00    |
+|            010 | sw          |        0 |       0 |        1 |      1 |        X |      0 |      0 |      0 | 00    |
+|            011 | beq         |        0 |       0 |        0 |      0 |        X |      1 |      0 |      1 | 01    |
+|            100 | **LI**      |    **1** |       0 |        0 |  **1** |        0 |      0 |      0 |      0 | 00    |
+
+
+
+┌───────────┼─────────┼────────┼──────┼───────┼──────┼────────┼─────┼─────┐
+│ Opcode (D7–D5)│ Instruction│ RegWrite │ MemRead│ MemWrite│ ALUSrc │ MemtoReg │ Branch │ ALUOp  │
+├───────────┼─────────┼────────┼──────┼───────┼──────┼────────┼─────┼─────┤
+│ 000           │ R-type     │    1     │   0    │    0    │   0    │    0     │   0    │  10    │
+│ 001           │ lw         │    1     │   1    │    0    │   1    │    1     │   0    │  00    │
+│ 010           │ sw         │    0     │   0    │    1    │   1    │    X     │   0    │  00    │
+│ 011           │ beq        │    0     │   0    │    0    │   0    │    X     │   1    │  01    │
+│ 100           │ LI         │    1     │   0    │    0    │   1    │    0     │   0    │  00    │
+└───────────┼─────────┼────────┼──────┼───────┼──────┼────────┼─────┼─────┘
+
+
+Main control signals
+
+RegWrite = ALU + LW = NOT(Y0') + NOT(Y1')
+MemRead = LW = NOT(Y1')
+MemWrite = SW = NOT(Y2')
+ALUSrc = LW + SW = NOT(Y1') + NOT(Y2')
+MemtoReg = LW = NOT(Y1')
+Branch = BEQ = NOT(Y3')
+
+(Optional) ALUOp bits (if you still want to display them)
+ALUOp1 = ALU = NOT(Y0')
+ALUOp0 = BEQ = NOT(Y3')
+
+RegWrite = ALU + LW + LI = ¬Y0’ + ¬Y1’ + ¬Y4’
+ALUSrc = LW + SW + LI = ¬Y1’ + ¬Y2’ + ¬Y4’
+
+============================================================================================================================================
+---
+
+# ✅ Common for all instructions
+
+* **D7–D5 = Opcode** (goes to your 74LS138)
+
+Your decoder outputs (active-low): **Y0’..Y7’**
+We use these active-high instruction-type signals:
+
+* **ALU = ¬Y0’**  (opcode = 000)
+* **LW  = ¬Y1’**  (opcode = 001)
+* **SW  = ¬Y2’**  (opcode = 010)
+* **BEQ = ¬Y3’**  (opcode = 011)
+* **LI  = ¬Y4’**  (opcode = 100)  ✅ NEW
+
+(Other decoder outputs Y5’,Y6’,Y7’ unused for now.)
+
+---
+
+# 1) Opcode = `000`  → **ALU / R-type**
+
+**Purpose:** do one of your ALU operations (16 ops)
+
+* **ALU selector (funct) = D4–D1** ✅ goes to S3..S0 **when ALUOp indicates R-type**
+* **D0 = don’t care** (you can keep 0 or 1)
+
+## ALU Control Logic (S3..S0 generation)
+
+We keep your ALU-control style based on **ALUOp** and **Func bits**.
+
+### Define:
+
+* **Func3 = D4**
+* **Func2 = D3**
+* **Func1 = D2**
+* **Func0 = D1**
+
+### ALU_Control_3 (Most Significant Bit)
+
+* It is `1` only when **ALUOp=10** AND **Func3=1**
+* **Equation:**
+  `ALU_Control_3 = (ALUOp1 AND NOT(ALUOp0) AND Func3)`
+
+### ALU_Control_2
+
+* **Equation:**
+  `ALU_Control_2 = (ALUOp1 AND NOT(ALUOp0) AND Func2)`
+
+### ALU_Control_1
+
+* **Equation:**
+  `ALU_Control_1 = (ALUOp1 AND NOT(ALUOp0) AND Func1)`
+
+### ALU_Control_0 (Least Significant Bit)
+
+It is `1` in two cases:
+
+1. When **ALUOp=01** (forced SUB for BEQ)
+2. When **ALUOp=10** AND **Func0=1** (R-type funct)
+
+* **Equation:**
+  `ALU_Control_0 = (NOT(ALUOp1) AND ALUOp0) OR (ALUOp1 AND NOT(ALUOp0) AND Func0)`
+
+✅ In this opcode `000` format:
+
+* **ALU selector = D4 D3 D2 D1**
+* **There is NO rs/rt/rd encoded**
+* Inputs come from your **fixed or mux-selected registers** (RA/RB forced logic)
+* **offset = not present**
+
+---
+
+# 2) Opcode = `001`  → **LW (load word)**
+
+**Purpose:** address = Reg[rs] + offset, then load memory data
+
+* **rs (base register) = D4–D3**
+* **offset (signed 3-bit) = D2–D0** ✅ goes into sign extender
+* **rt is not encoded separately**
+* **destination (write register) = RT bits = D2–D1** (as you requested for WA)
+
+So for opcode `001`:
+
+* **rs = D4 D3**
+* **offset = D2 D1 D0**
+* **write destination WA = D2 D1 (RT field you’re using)**
+* **ALU selector is forced to ADD (0000)** (because LW uses ALUOp=00)
+
+---
+
+# 3) Opcode = `010`  → **SW (store word)**
+
+**Purpose:** address = Reg[rs] + offset, then store data to memory
+
+* **rs (base register) = D4–D3**
+* **offset (signed 3-bit) = D2–D0**
+* **no register write**
+
+So for opcode `010`:
+
+* **rs = D4 D3**
+* **offset = D2 D1 D0**
+* **WA unused** (RegWrite = 0)
+* **ALU selector forced to ADD (0000)** (because SW uses ALUOp=00)
+
+---
+
+# 4) Opcode = `011`  → **BEQ (branch equal)**
+
+**Purpose:** compare two registers (Reg[rs] vs Reg[rt]) using SUB
+
+* **rs = D4–D3**
+* **rt = D2–D1**
+* **D0 don’t care**
+
+So for opcode `011`:
+
+* **rs = D4 D3**
+* **rt = D2 D1**
+* **ALU selector forced to SUB (0001)** (because BEQ uses ALUOp=01)
+
+---
+
+# 5) Opcode = `100` → **LI (Load Immediate)** ✅ NEW
+
+**Purpose:** load a small constant into a register
+This gives you MOV-like behavior for small numbers (0..7 or signed −4..+3).
+
+## Instruction Format
+
+* **RD (destination register) = D4–D3**
+* **Immediate (signed 3-bit) = D2–D0**
+* **ALU will compute: 0 + Immediate**
+* WB writes the ALU result into RD
+
+So for opcode `100`:
+
+* **rd = D4 D3**
+* **imm = D2 D1 D0**
+* **WA = RD = D4 D3** ✅ (write destination comes from RD field)
+* **ALUSrc = 1** (choose sign-extended immediate for B input)
+* **ALU selector forced to ADD (0000)** (we want 0 + imm)
+* **MemtoReg = 0** (write ALU result back)
+* **MemRead = 0, MemWrite = 0**
+
+### Important datapath note for LI
+
+Since LI requires `0 + imm`, you must ensure ALU input A is **0** (either by forcing RA to a register that holds 0, or by adding a mux that selects constant 0 into ALU_A when LI=1).
+
+---
+
+# Quick summary table
+
+| Opcode (D7–D5) | Meaning | D4–D3  | D2–D1           | D2–D0      | D4–D1                    |
+| -------------- | ------- | ------ | --------------- | ---------- | ------------------------ |
+| 000            | ALU op  | —      | —               | —          | **ALU selector (FUNCT)** |
+| 001            | LW      | **rs** | (used as WA=rt) | **offset** | not used                 |
+| 010            | SW      | **rs** | —               | **offset** | not used                 |
+| 011            | BEQ     | **rs** | **rt**          | —          | not used                 |
+| 100            | LI      | **rd** | part of imm     | **imm**    | not used                 |
+
+---
+
+## Control signals (including LI)
+
+Using your decoder signals (active-high): ALU, LW, SW, BEQ, LI
+
+### Base control signals
+
+* **RegWrite = ALU + LW + LI**
+* **MemRead  = LW**
+* **MemWrite = SW**
+* **ALUSrc   = LW + SW + LI**
+* **MemtoReg = LW**
+* **Branch   = BEQ**
+
+### ALUOp bits (keep your display style)
+
+* **ALUOp1 = ALU + LI**
+  (R-type uses 10, LI can be treated as “R-type ADD” category)
+* **ALUOp0 = BEQ**
+  (BEQ uses 01)
+
+✅ This makes:
+
+* ALU opcode=000 → ALUOp = 10
+* LW/SW → ALUOp = 00
+* BEQ → ALUOp = 01
+* LI → ALUOp = 10 but selector forced to ADD by setting funct=0000 or by separate forcing
+
+*(If you want LI to behave exactly like “forced ADD regardless of D4..D1”, you can also treat LI as ALUOp=00 (ADD) instead of 10. But your note says ALUOp=10; both are workable.)*
+
+---
+
+# Registers as **R0, R1, R2, R3** (selected by 2-bit addresses `00,01,10,11`)
+
+---
+
+# Fixed / mux-selected registers summary (by opcode)
+
+### ✅ Opcode `000` = ALU / R-type
+
+Because you used **D4–D1 as FUNCT**, you do not have rs/rt bits here, so you forced fixed registers:
+
+* **RA = 00 → A always reads R0**
+* **RB = 01 → B always reads R1**
+* **WA = 00 → destination always R0** (since LW=0 and LI=0, WA mux outputs 00)
+
+Fixed registers used:
+
+* **A input fixed = R0**
+* **B input fixed = R1**
+* **Destination fixed = R0**
+
+---
+
+### ✅ Opcode `001` = LW (load)
+
+LW uses instruction fields:
+
+* **RA = RS = IR4..IR3** (base register)
+* **RB = fixed 01 (R1)** but ignored in ALU input because **ALUSrc=1** selects offset for B
+* **WA = RT = IR2..IR1** (destination register)
+
+Fixed registers used:
+
+* **B register selection stays fixed to R1**, but it’s not used for ALU because ALUSrc=1
+* Destination comes from RT field
+
+---
+
+### ✅ Opcode `010` = SW (store)
+
+SW uses RS for address base:
+
+* **RA = RS = IR4..IR3** (base register)
+* **RB = fixed 01 (R1)** and normally this is the store-data source
+* **WA don’t care** (RegWrite=0)
+
+Fixed registers used:
+
+* **Store-data register fixed = R1** (since RB fixed when not BEQ)
+
+*(If later you want store data from RT bits, RB must select IR2..IR1 during SW too.)*
+
+---
+
+### ✅ Opcode `011` = BEQ
+
+BEQ compares two registers:
+
+* **RA = RS = IR4..IR3**
+* **RB = RT = IR2..IR1** (because BEQ=1 forces RB mux to instruction bits)
+* **WA don’t care** (RegWrite=0)
+
+Fixed registers used:
+
+* **None** (both chosen from instruction bits)
+
+---
+
+### ✅ Opcode `100` = LI (Load Immediate) ✅ NEW
+
+LI writes a constant into RD:
+
+* **RA behavior:** not important if you force ALU_A = 0; otherwise RA selects whatever feeds A.
+* **RB:** ignored for ALU input because **ALUSrc=1** selects the immediate.
+* **WA = RD = IR4..IR3** (destination register)
+* ALU performs **0 + imm**, WB writes result to RD
+
+===============================================================================================================
+_______________________________________________________________________________________________________________
+## Where WA1/WA0 come from
+
+* **Instruction provides candidates:**
+
+  * **RT bits = IR2..IR1**
+* **Fixed default candidate:**
+
+  * **00** (R0)
+
+Your **WA 2-bit MUX** chooses between these.
+
+### WA MUX rule (what we set)
+
+* **If LW=1 → WA = RT = IR2..IR1**
+* **If LW=0 → WA = 00 (fixed)**
+
+So:
+
+* **WA0 = output of mux channel selecting IR1 vs 0**
+* **WA1 = output of mux channel selecting IR2 vs 0**
+
+Those WA outputs then go into the **74LS139 write decoder** inputs.
+
+## When is WA “default” vs “fixed”?
+
+* **Default = “from instruction” (RT)** happens only for **LW** (opcode `001`) because only LW writes a register using your encoding.
+* **Fixed = 00** happens when **LW=0**, which includes:
+
+  * **ALU opcode `000`** (R-type): RegWrite=1, but you don’t have Rd bits → we used **fixed destination R0**
+  * **SW (`010`) and BEQ (`011`)**: RegWrite=0, so write decoder is disabled anyway (WA doesn’t matter, but it will still sit at 00 because LW=0)
+
+## Do you get all 4 combinations (00,01,10,11) on WA?
+
+✅ **Yes, but only during LW instructions.**
+Because in LW format you encoded **RT = IR2..IR1**, so RT can be:
+
+* 00, 01, 10, 11
+
+So during LW:
+
+* **WA = IR2..IR1 = {00,01,10,11}** ✅
+
+During ALU instructions (opcode 000):
+
+* **WA is fixed to 00** (because LW=0 and we chose fixed dest=R0)
+
+

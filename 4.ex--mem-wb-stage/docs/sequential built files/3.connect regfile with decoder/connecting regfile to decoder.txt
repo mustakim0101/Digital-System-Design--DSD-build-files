@@ -1,0 +1,196 @@
+Yes — easy change. We’ll keep **everything else exactly the same**, and only change the **WA mux** so that **LW writes to RT (IR2–IR1)** instead of RS (IR4–IR3).
+
+Below is the **complete wiring again** (RA, RB, WA) with the corrected WA rule you want.
+
+---
+
+# ✅ Final Address-Select Wiring (RA0/RA1, RB0/RB1, WA0/WA1)
+
+## Signals used
+
+From your opcode decoder (74LS138 outputs active-low):
+
+* **ALU = ¬Y0’**  (opcode = 000)
+* **LW  = ¬Y1’**  (opcode = 001)
+* **SW  = ¬Y2’**  (opcode = 010)
+* **BEQ = ¬Y3’**  (opcode = 011)
+
+From Instruction Register outputs:
+
+* **IR4, IR3 = RS bits**
+* **IR2, IR1 = RT bits**
+* **IR2..IR0 = offset (lw/sw)**
+
+All muxes we use are **74LS157**.
+
+---
+
+# 1) RA (Read Port A Address) — sometimes fixed, sometimes RS
+
+### Goal:
+
+* If **ALU=1** → RA = `00` (fixed R0 for ALU-type)
+* Else → RA = `RS = IR4..IR3` (lw/sw/beq use base register = RS)
+
+## Use one 74LS157 (call it U_RA)
+
+### Power / enable
+
+* **pin16 → +5V**
+* **pin8  → GND**
+* **pin15 (/G) → GND** (always enabled)
+
+### Select
+
+* **pin1 (SEL) → ALU**
+
+### Channel wiring
+
+#### RA0 (bit0) = output of channel 1
+
+* **pin2 (A1) = IR3**   (when ALU=0 → use RS bit0)
+* **pin3 (B1) = GND**   (when ALU=1 → fixed 0)
+* **pin4 (Y1) = RA0**
+
+#### RA1 (bit1) = output of channel 2
+
+* **pin5 (A2) = IR4**   (when ALU=0 → use RS bit1)
+* **pin6 (B2) = GND**   (when ALU=1 → fixed 0)
+* **pin7 (Y2) = RA1**
+
+### Connect RA outputs to ReadPortA mux bank (all 74LS153)
+
+For every 74LS153 in **ReadPortA**:
+
+* **RA0 → pin14 (A)**
+* **RA1 → pin2  (B)**
+
+✅ Behavior:
+
+* ALU=1 → RA = 00 (R0)
+* ALU=0 → RA = IR4..IR3 (RS)
+
+---
+
+# 2) RB (Read Port B Address) — fixed unless BEQ
+
+### Goal:
+
+* If **BEQ=1** → RB = `RT = IR2..IR1` (compare regs)
+* Else → RB = `01` (fixed R1)
+
+## Use one 74LS157 (call it U_RB)
+
+### Power / enable
+
+* **pin16 → +5V**
+* **pin8  → GND**
+* **pin15 (/G) → GND**
+
+### Select
+
+* **pin1 (SEL) → BEQ**
+
+### Channel wiring
+
+#### RB0 (bit0) = channel 1
+
+* **pin2 (A1) = +5V**  (BEQ=0 → fixed 1)
+* **pin3 (B1) = IR1**  (BEQ=1 → RT bit0)
+* **pin4 (Y1) = RB0**
+
+#### RB1 (bit1) = channel 2
+
+* **pin5 (A2) = GND**  (BEQ=0 → fixed 0)
+* **pin6 (B2) = IR2**  (BEQ=1 → RT bit1)
+* **pin7 (Y2) = RB1**
+
+### Connect RB outputs to ReadPortB mux bank (all 74LS153)
+
+For every 74LS153 in **ReadPortB**:
+
+* **RB0 → pin14 (A)**
+* **RB1 → pin2  (B)**
+
+✅ Behavior:
+
+* BEQ=0 → RB = 01 (R1)
+* BEQ=1 → RB = IR2..IR1 (RT)
+
+---
+
+# 3) WA (Write Address) — NOW WRITES TO RT (IR2..IR1) FOR LW
+
+You asked:
+
+> “don’t use RS for WA. I want write in the same bits as RT. So use IR2 IR1 for WA.”
+
+So we will implement:
+
+### Goal:
+
+* If **LW=1** → WA = `RT = IR2..IR1`
+* Else (ALU-type) → WA = `00` (write to R0)
+* SW/BEQ don’t write anyway (RegWrite=0 gates decoder)
+
+## Use one 74LS157 (call it U_WA)
+
+### Power / enable
+
+* **pin16 → +5V**
+* **pin8  → GND**
+* **pin15 (/G) → GND**
+
+### Select
+
+* **pin1 (SEL) → LW**
+
+### Channel wiring
+
+#### WA0 (bit0) = channel 1
+
+* **pin2 (A1) = GND**  (LW=0 → fixed 0)
+* **pin3 (B1) = IR1**  (LW=1 → RT bit0)
+* **pin4 (Y1) = WA0**
+
+#### WA1 (bit1) = channel 2
+
+* **pin5 (A2) = GND**  (LW=0 → fixed 0)
+* **pin6 (B2) = IR2**  (LW=1 → RT bit1)
+* **pin7 (Y2) = WA1**
+
+### Connect WA outputs to your write decoder (74LS139)
+
+* **WA0 → 74LS139 A input**
+* **WA1 → 74LS139 B input**
+
+✅ Behavior:
+
+* LW=1 → WA = IR2..IR1 (RT)
+* LW=0 → WA = 00 (R0)
+* SW/BEQ won’t write because RegWrite=0 disables the write decoder
+
+---
+
+# 4) Reminder: Gate write decoder with RegWrite (so SW/BEQ never write)
+
+You must keep this rule:
+
+* when **RegWrite=0**, 74LS139 must be disabled (no register gets IE low)
+
+This makes WA irrelevant for SW and BEQ (safe/stable).
+
+---
+
+# ✅ Final opcode behavior summary (with your new WA)
+
+| Opcode | Type | RA (Read A) | RB (Read B) | WA (Write Addr)         |
+| ------ | ---- | ----------- | ----------- | ----------------------- |
+| 000    | ALU  | 00 fixed    | 01 fixed    | 00 fixed                |
+| 001    | LW   | RS=IR4..IR3 | 01 fixed    | **RT=IR2..IR1**         |
+| 010    | SW   | RS=IR4..IR3 | 01 fixed    | don’t care (RegWrite=0) |
+| 011    | BEQ  | RS=IR4..IR3 | RT=IR2..IR1 | don’t care (RegWrite=0) |
+
+Everything else stays unchanged.
+
+If you want, next I’ll give you the exact **ALUSrc mux (74LS157×2)** wiring for B = RegB vs OffsetExt, and the **forced S3..S0** control block wiring in the same pin-by-pin style.
